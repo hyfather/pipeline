@@ -10,7 +10,10 @@ import "github.com/hyfather/pipeline"
 
 p := pipeline.New()
 p.AddStageWithFanOut(myStage, 10)
-p.Run(inChan)
+p.AddStageWithFanOut(anotherStage, 100)
+doneChan := p.Run(inChan)
+
+<- doneChan
 ```
 
 More comprehensive examples can be found [here](./examples)
