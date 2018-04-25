@@ -3,6 +3,9 @@
 This package provides a simplistic implementation of Go pipelines
 as outlined in [Go Concurrency Patterns: Pipelines and cancellation.](https://blog.golang.org/pipelines)
 
+# Docs
+GoDoc available [here.](https://godoc.org/github.com/hyfather/pipeline)
+
 # Example Usage
 
 ```
@@ -16,4 +19,4 @@ doneChan := p.Run(inChan)
 <- doneChan
 ```
 
-More comprehensive examples can be found [here](./examples)
+More comprehensive examples can be found [here.](./examples)
