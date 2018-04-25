@@ -44,6 +44,6 @@ func main() {
 	p.AddStageWithFanOut(slowPrint, 10)
 
 	fmt.Println("Waiting")
-	<- p.Run(ch)
+	<-p.Run(ch)
 	fmt.Println("Done")
 }
