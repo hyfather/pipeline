@@ -32,9 +32,9 @@ func (p *Pipeline) AddStage(inFunc ProcessFn) {
 // fanSize number indicates how many instances of this stage will read from the
 // previous stage and process the data flowing through simultaneously to take
 // advantage of parallel CPU usage.
-// Most pipelines will have multiple stages, and the order in which AddStageWithFanOut
-// AddStage is invoked matters -- the first invocation indicates the first stage
-// and so forth.
+// Most pipelines will have multiple stages, and the order in which AddStage
+// and AddStageWithFanOut is invoked matters -- the first invocation indicates
+// the first stage and so forth.
 func (p *Pipeline) AddStageWithFanOut(inFunc ProcessFn, fanSize uint64) {
 	*p = append(*p, fanningStageFnFactory(inFunc, fanSize))
 }
