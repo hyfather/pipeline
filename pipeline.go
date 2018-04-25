@@ -39,6 +39,12 @@ func (p *Pipeline) AddStageWithFanOut(inFunc ProcessFn, fanSize uint64) {
 	*p = append(*p, fanningStageFnFactory(inFunc, fanSize))
 }
 
+// AddRawStage simply adds a StageFn type to the pipeline without any further
+// processing or parsing. This is meant for extensibility and customizations.
+func (p *Pipeline) AddRawStage(inFunc StageFn) {
+	*p = append(*p, inFunc)
+}
+
 // Run starts the pipeline with all the stages that have been added. Run is not
 // a blocking function and will return immediately with a doneChan. Consumers
 // can wait on the doneChan for an indication of when the pipeline has completed
@@ -87,24 +93,25 @@ func fanningStageFnFactory(inFunc ProcessFn, fanSize uint64) (outFunc StageFn) {
 		for i := uint64(0); i < fanSize; i++ {
 			channels = append(channels, stageFnFactory(inFunc)(inChan))
 		}
-		outChan = fanIn(channels)
+		outChan = MergeChannels(channels)
 		return
 	}
 }
 
-// fanIn merges an array of channels into one channel
-func fanIn(channels []chan interface{}) (outChan chan interface{}) {
+// MergeChannels merges an array of channels into a single channel. This utility
+// function can also be used independently outside of a pipeline.
+func MergeChannels(inChans []chan interface{}) (outChan chan interface{}) {
 	var wg sync.WaitGroup
-	wg.Add(len(channels))
+	wg.Add(len(inChans))
 
 	outChan = make(chan interface{})
-	for _, ch := range channels {
+	for _, inChan := range inChans {
 		go func(ch <-chan interface{}) {
 			defer wg.Done()
 			for obj := range ch {
 				outChan <- obj
 			}
-		}(ch)
+		}(inChan)
 	}
 
 	go func() {
