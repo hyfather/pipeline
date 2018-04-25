@@ -1,3 +1,5 @@
+[![GoDoc](https://godoc.org/github.com/hyfather/pipeline?status.svg)](https://godoc.org/github.com/hyfather/pipeline)
+
 # pipeline
 
 This package provides a simplistic implementation of Go pipelines
