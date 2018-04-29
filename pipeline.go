@@ -9,7 +9,8 @@ import (
 // Pipeline type defines a pipeline to which processing "stages" can
 // be added and configured to fan-out. Pipelines are meant to be long
 // running as they continuously process data as it comes in.
-// A pipeline can be simultaneously run multiple times with different 
+//
+// A pipeline can be simultaneously run multiple times with different
 // input channels by invoking the Run() method multiple times.
 // A running pipeline shouldn't be copied.
 type Pipeline []StageFn
@@ -37,9 +38,13 @@ func (p *Pipeline) AddStage(inFunc ProcessFn) {
 // fanSize number indicates how many instances of this stage will read from the
 // previous stage and process the data flowing through simultaneously to take
 // advantage of parallel CPU scheduling.
+//
 // Most pipelines will have multiple stages, and the order in which AddStage()
 // and AddStageWithFanOut() is invoked matters -- the first invocation indicates
 // the first stage and so forth.
+//
+// Since discrete goroutines process the inChan for FanOut > 1, the order of
+// objects flowing through the FanOut stages can't be guaranteed.
 func (p *Pipeline) AddStageWithFanOut(inFunc ProcessFn, fanSize uint64) {
 	*p = append(*p, fanningStageFnFactory(inFunc, fanSize))
 }
@@ -54,9 +59,11 @@ func (p *Pipeline) AddRawStage(inFunc StageFn) {
 // a blocking function and will return immediately with a doneChan. Consumers
 // can wait on the doneChan for an indication of when the pipeline has completed
 // processing.
+//
 // The pipeline runs until its `inChan` channel is open. Once the `inChan` is closed,
 // the pipeline stages will sequentially complete from the first stage to the last.
 // Once all stages are complete, the last outChan is drained and the doneChan is closed.
+//
 // Run() can be invoked multiple times to start multiple instances of a pipeline
 // that will typically process different incoming channels.
 func (p *Pipeline) Run(inChan <-chan interface{}) (doneChan chan struct{}) {
