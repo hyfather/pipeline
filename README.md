@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/hyfather/pipeline.svg?branch=master)](https://travis-ci.org/hyfather/pipeline)
 [![cover.run](https://cover.run/go/github.com/hyfather/pipeline.svg?style=flat&tag=golang-1.10)](https://cover.run/go?tag=golang-1.10&repo=github.com%2Fhyfather%2Fpipeline)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hyfather/pipeline)](https://goreportcard.com/report/github.com/hyfather/pipeline)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhyfather%2Fpipeline.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhyfather%2Fpipeline?ref=badge_shield)
 
 # pipeline
 
@@ -25,3 +26,7 @@ doneChan := p.Run(inChan)
 ```
 
 More comprehensive examples can be found [here.](./examples)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhyfather%2Fpipeline.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhyfather%2Fpipeline?ref=badge_large)
